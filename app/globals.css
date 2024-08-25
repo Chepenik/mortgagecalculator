@@ -3,16 +3,20 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 51, 51, 51;
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 240, 240, 240;
+  --input-background: 245, 245, 245;
+  --border-color: 204, 204, 204;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-rgb: 26, 32, 44;
+    --background-end-rgb: 17, 24, 39;
+    --input-background: 45, 55, 72;
+    --border-color: 74, 85, 104;
   }
 }
 
@@ -20,10 +24,20 @@ body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
-      transparent,
+      rgb(var(--background-start-rgb)),
       rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    );
+}
+
+.input-field {
+  background-color: rgb(var(--input-background));
+  border: 1px solid rgb(var(--border-color));
+  color: rgb(var(--foreground-rgb));
+}
+
+.card {
+  background-color: rgb(var(--background-start-rgb));
+  border: 1px solid rgb(var(--border-color));
 }
 
 @layer utilities {
