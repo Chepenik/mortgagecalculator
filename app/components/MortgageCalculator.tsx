@@ -4,11 +4,11 @@ import InputField from './InputField';
 import { AmortizationRow, calculateMortgage, generateAmortizationSchedule } from '../utils/mortgageCalculations';
 
 const MortgageCalculator: React.FC = () => {
-  const [loanAmount, setLoanAmount] = useState<number>(250000);
-  const [annualInterestRate, setAnnualInterestRate] = useState<number>(6.25);
-  const [loanTermYears, setLoanTermYears] = useState<number>(30);
-  const [propertyTax, setPropertyTax] = useState<number>(4200);
-  const [homeInsurance, setHomeInsurance] = useState<number>(2000);
+  const [loanAmount, setLoanAmount] = useState<number>(0);
+  const [annualInterestRate, setAnnualInterestRate] = useState<number>(0);
+  const [loanTermYears, setLoanTermYears] = useState<number>(0);
+  const [propertyTax, setPropertyTax] = useState<number>(0);
+  const [homeInsurance, setHomeInsurance] = useState<number>(0);
   const [amortizationSchedule, setAmortizationSchedule] = useState<AmortizationRow[]>([]);
   const [loanPayment, setLoanPayment] = useState<number>(0);
   const [totalMonthlyPayment, setTotalMonthlyPayment] = useState<number>(0);
