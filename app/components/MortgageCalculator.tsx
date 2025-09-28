@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import MortgageInputs from "./MortgageInputs";
 import MortgageSummary from "./MortgageSummary";
 import AmortizationSchedule from "./AmortizationSchedule";
@@ -8,6 +8,8 @@ import PaymentBreakdownChart from "./charts/PaymentBreakdownChart";
 import PrincipalVsInterestChart from "./charts/PrincipalVsInterestChart";
 import EquityBuildupChart from "./charts/EquityBuildupChart";
 import BitcoinTicker from "./BitcoinTicker"; // Import BitcoinTicker
+import PremiumUpgrade from "./PremiumUpgrade";
+import PremiumOverlay from "./PremiumOverlay";
 import {
   generateAmortizationSchedule,
   calculateTotalCostOfOwnership,
@@ -44,6 +46,13 @@ const MortgageCalculator: React.FC = () => {
   const [newCostName, setNewCostName] = useState("");
   const [newCostValue, setNewCostValue] = useState<number | "">(0);
   const [extraPayment, setExtraPayment] = useState(0);
+  
+  // Premium state management
+  const [calculationCount, setCalculationCount] = useState(0);
+  const [isPremium, setIsPremium] = useState(false);
+  const [showPremiumUpgrade, setShowPremiumUpgrade] = useState(false);
+  const [hasShownPaywall, setHasShownPaywall] = useState(false);
+  const isInitialRender = useRef(true);
 
   const handleAddCost = () => {
     if (
@@ -80,6 +89,45 @@ const MortgageCalculator: React.FC = () => {
 
   const handleExtraPaymentChange = (amount: number) => {
     setExtraPayment(amount);
+  };
+
+  // Track calculations for paywall
+  useEffect(() => {
+    // Skip counting on initial render with pre-filled data
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    
+    if (isDataFilled && !hasShownPaywall && !isPremium) {
+      const newCount = calculationCount + 1;
+      setCalculationCount(newCount);
+      
+      if (newCount >= 3) {
+        setShowPremiumUpgrade(true);
+        setHasShownPaywall(true);
+      }
+    }
+  }, [mortgageData.homePrice, mortgageData.annualInterestRate, mortgageData.loanTermYears, mortgageData.downPayment]);
+
+  // Premium upgrade handlers
+  const handleStartTrial = () => {
+    setIsPremium(true);
+    setShowPremiumUpgrade(false);
+    // In a real app, this would trigger payment processing
+  };
+
+  const handleViewFeatures = () => {
+    // Could show more detailed features or redirect to pricing page
+    console.log("View all premium features");
+  };
+
+  const handleClosePremium = () => {
+    setShowPremiumUpgrade(false);
+  };
+
+  const handleUpgradeFromOverlay = () => {
+    setShowPremiumUpgrade(true);
   };
 
   const calculationResult = useMemo(() => {
@@ -190,6 +238,17 @@ const MortgageCalculator: React.FC = () => {
     mortgageData.loanTermYears > 0 &&
     mortgageData.annualInterestRate > 0;
 
+  // Show premium upgrade screen if triggered
+  if (showPremiumUpgrade) {
+    return (
+      <PremiumUpgrade
+        onClose={handleClosePremium}
+        onStartTrial={handleStartTrial}
+        onViewFeatures={handleViewFeatures}
+      />
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 bg-gray-50 dark:bg-gray-900">
       <div className="lg:col-span-2">
@@ -272,23 +331,41 @@ const MortgageCalculator: React.FC = () => {
             <h2 className="text-2xl font-bold mb-4 text-red-600 dark:text-red-400">
               Principal vs Interest Payments
             </h2>
-            <PrincipalVsInterestChart
-              data={yearlyData}
-              loanTermYears={calculationResult.actualLoanTermYears}
-              extraPayment={extraPayment}
-              onExtraPaymentChange={handleExtraPaymentChange}
-            />
+            {!isPremium && calculationCount >= 2 ? (
+              <PremiumOverlay
+                featureName="Advanced Payment Analysis"
+                onUpgrade={handleUpgradeFromOverlay}
+              >
+                <div className="h-64 bg-gray-100 dark:bg-gray-700 rounded" />
+              </PremiumOverlay>
+            ) : (
+              <PrincipalVsInterestChart
+                data={yearlyData}
+                loanTermYears={calculationResult.actualLoanTermYears}
+                extraPayment={extraPayment}
+                onExtraPaymentChange={handleExtraPaymentChange}
+              />
+            )}
           </div>
           <div className="lg:col-span-2 bg-white p-4 dark:bg-gray-800 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-4 text-red-600 dark:text-red-400">
               Home Value and Equity Over Time
             </h2>
-            <EquityBuildupChart
-              data={yearlyData}
-              homePrice={mortgageData.homePrice}
-              downPayment={mortgageData.downPayment}
-              extraPayment={extraPayment}
-            />
+            {!isPremium && calculationCount >= 1 ? (
+              <PremiumOverlay
+                featureName="Equity Growth Projections"
+                onUpgrade={handleUpgradeFromOverlay}
+              >
+                <div className="h-64 bg-gray-100 dark:bg-gray-700 rounded" />
+              </PremiumOverlay>
+            ) : (
+              <EquityBuildupChart
+                data={yearlyData}
+                homePrice={mortgageData.homePrice}
+                downPayment={mortgageData.downPayment}
+                extraPayment={extraPayment}
+              />
+            )}
           </div>
           <div className="lg:col-span-2 bg-white p-4 dark:bg-gray-800 rounded-lg shadow-md">
             <AmortizationSchedule
