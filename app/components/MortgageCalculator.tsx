@@ -1,124 +1,311 @@
-import React, { useState } from 'react';
-import { DollarSign, Percent, Calendar } from 'lucide-react';
-import InputField from './InputField';
-import { AmortizationRow, calculateMortgage, generateAmortizationSchedule } from '../utils/mortgageCalculations';
+"use client";
+import React, { useState, useMemo } from "react";
+import MortgageInputs from "./MortgageInputs";
+import MortgageSummary from "./MortgageSummary";
+import AmortizationSchedule from "./AmortizationSchedule";
+import LoanBalanceChart from "./charts/LoanBalanceChart";
+import PaymentBreakdownChart from "./charts/PaymentBreakdownChart";
+import PrincipalVsInterestChart from "./charts/PrincipalVsInterestChart";
+import EquityBuildupChart from "./charts/EquityBuildupChart";
+import BitcoinTicker from "./BitcoinTicker"; // Import BitcoinTicker
+import {
+  generateAmortizationSchedule,
+  calculateTotalCostOfOwnership,
+} from "../utils/mortgageCalculations";
+
+interface MortgageData {
+  homePrice: number;
+  downPayment: number;
+  annualInterestRate: number;
+  loanTermYears: number;
+  propertyTax: number;
+  homeInsurance: number;
+  hoa: number;
+  homeAppreciationRate: number;
+  additionalCosts: { name: string; value: number }[];
+}
+
+const initialMortgageData: MortgageData = {
+  homePrice: 400000,
+  downPayment: 80000,
+  annualInterestRate: 6.25,
+  loanTermYears: 30,
+  propertyTax: 4000,
+  homeInsurance: 2000,
+  hoa: 0,
+  homeAppreciationRate: 1.5,
+  additionalCosts: [],
+};
 
 const MortgageCalculator: React.FC = () => {
-  const [loanAmount, setLoanAmount] = useState<number>(0);
-  const [annualInterestRate, setAnnualInterestRate] = useState<number>(0);
-  const [loanTermYears, setLoanTermYears] = useState<number>(0);
-  const [propertyTax, setPropertyTax] = useState<number>(0);
-  const [homeInsurance, setHomeInsurance] = useState<number>(0);
-  const [amortizationSchedule, setAmortizationSchedule] = useState<AmortizationRow[]>([]);
-  const [loanPayment, setLoanPayment] = useState<number>(0);
-  const [totalMonthlyPayment, setTotalMonthlyPayment] = useState<number>(0);
-  const [totalInterest, setTotalInterest] = useState<number>(0);
+  const [mortgageData, setMortgageData] = useState<MortgageData>(
+    initialMortgageData
+  );
+  const [newCostName, setNewCostName] = useState("");
+  const [newCostValue, setNewCostValue] = useState<number | "">(0);
+  const [extraPayment, setExtraPayment] = useState(0);
 
-  const handleCalculate = () => {
-    const { schedule, loanPayment, totalMonthlyPayment, totalInterest } = generateAmortizationSchedule(
-      loanAmount,
-      annualInterestRate,
-      loanTermYears,
-      propertyTax,
-      homeInsurance
-    );
-    setAmortizationSchedule(schedule);
-    setLoanPayment(loanPayment);
-    setTotalMonthlyPayment(totalMonthlyPayment);
-    setTotalInterest(totalInterest);
+  const handleAddCost = () => {
+    if (
+      newCostName &&
+      typeof newCostValue === "number" &&
+      newCostValue > 0
+    ) {
+      const newCosts = [
+        ...mortgageData.additionalCosts,
+        { name: newCostName, value: newCostValue },
+      ];
+      setMortgageData({ ...mortgageData, additionalCosts: newCosts });
+      setNewCostName("");
+      setNewCostValue("");
+    }
   };
 
-  const formatCurrency = (value: number): string => {
-    return value.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+  const handleClearCosts = () => {
+    setMortgageData({
+      homePrice: 0,
+      downPayment: 0,
+      annualInterestRate: 0,
+      loanTermYears: 0,
+      propertyTax: 0,
+      homeInsurance: 0,
+      hoa: 0,
+      homeAppreciationRate: 0,
+      additionalCosts: [],
     });
+    setNewCostName("");
+    setNewCostValue("");
+    setExtraPayment(0);
   };
+
+  const handleExtraPaymentChange = (amount: number) => {
+    setExtraPayment(amount);
+  };
+
+  const calculationResult = useMemo(() => {
+    if (
+      mortgageData.homePrice <= 0 ||
+      mortgageData.annualInterestRate <= 0 ||
+      mortgageData.loanTermYears <= 0
+    ) {
+      return {
+        schedule: [],
+        loanPayment: 0,
+        totalMonthlyPayment: 0,
+        totalInterest: 0,
+        totalCost: 0,
+        totalCostOfOwnership: 0,
+        loanAmount: 0,
+        downPayment: 0,
+        actualLoanTermYears: 0,
+      };
+    }
+    const loanAmount = mortgageData.homePrice - mortgageData.downPayment;
+    const {
+      schedule,
+      loanPayment,
+      totalMonthlyPayment: baseMonthlyPayment,
+      totalInterest,
+    } = generateAmortizationSchedule(
+      loanAmount,
+      mortgageData.annualInterestRate,
+      mortgageData.loanTermYears,
+      mortgageData.propertyTax,
+      mortgageData.homeInsurance,
+      mortgageData.hoa,
+      extraPayment
+    );
+    const additionalCostsTotal = mortgageData.additionalCosts.reduce(
+      (total, cost) => total + cost.value,
+      0
+    );
+    const totalMonthlyPayment =
+      baseMonthlyPayment + additionalCostsTotal + extraPayment;
+    const { totalCost: totalCostOfOwnership, actualLoanTermYears } =
+      calculateTotalCostOfOwnership(
+        loanAmount,
+        totalInterest,
+        mortgageData.loanTermYears,
+        mortgageData.propertyTax,
+        mortgageData.homeInsurance,
+        mortgageData.hoa,
+        mortgageData.homeAppreciationRate,
+        mortgageData.downPayment,
+        mortgageData.additionalCosts,
+        extraPayment
+      );
+    const totalCost = totalMonthlyPayment * 12 * actualLoanTermYears;
+    return {
+      schedule,
+      loanPayment,
+      totalMonthlyPayment,
+      totalInterest,
+      totalCost,
+      totalCostOfOwnership,
+      loanAmount,
+      downPayment: mortgageData.downPayment,
+      actualLoanTermYears,
+    };
+  }, [mortgageData, extraPayment]);
+
+  const yearlyData = useMemo(() => {
+    if (!calculationResult.schedule.length) return [];
+    let cumulativePrincipal = 0;
+    let cumulativeInterest = 0;
+    return calculationResult.schedule
+      .filter((row) => row.month % 12 === 0 || row.balance === 0)
+      .map((row) => {
+        cumulativePrincipal +=
+          row.principalPayment * (row.month % 12 === 0 ? 12 : row.month % 12);
+        cumulativeInterest +=
+          row.interestPayment * (row.month % 12 === 0 ? 12 : row.month % 12);
+        const currentHomeValue =
+          mortgageData.homePrice *
+          Math.pow(
+            1 + mortgageData.homeAppreciationRate / 100,
+            row.month / 12
+          );
+        return {
+          year: row.month / 12,
+          balance: row.balance,
+          principalPaid: cumulativePrincipal,
+          interestPaid: cumulativeInterest,
+          homeValue: currentHomeValue,
+          equity: currentHomeValue - row.balance,
+        };
+      });
+  }, [calculationResult.schedule, mortgageData]);
+
+  const paymentBreakdown = [
+    { name: "Principal & Interest", value: calculationResult.loanPayment },
+    { name: "Property Tax", value: mortgageData.propertyTax / 12 },
+    { name: "Home Insurance", value: mortgageData.homeInsurance / 12 },
+    { name: "HOA", value: mortgageData.hoa },
+    ...mortgageData.additionalCosts,
+    { name: "Extra Payment", value: extraPayment },
+  ];
+
+  const isDataFilled =
+    mortgageData.homePrice > 0 &&
+    mortgageData.loanTermYears > 0 &&
+    mortgageData.annualInterestRate > 0;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-        <InputField
-          icon={<DollarSign className="h-5 w-5 text-orange-500 dark:text-orange-400" />}
-          label="Loan Amount"
-          value={loanAmount}
-          onChange={setLoanAmount}
-          step={1000}
-        />
-        <InputField
-          icon={<Percent className="h-5 w-5 text-orange-500 dark:text-orange-400" />}
-          label="Annual Interest Rate"
-          value={annualInterestRate}
-          onChange={setAnnualInterestRate}
-          step={0.1}
-        />
-        <InputField
-          icon={<Calendar className="h-5 w-5 text-orange-500 dark:text-orange-400" />}
-          label="Loan Term (Years)"
-          value={loanTermYears}
-          onChange={setLoanTermYears}
-        />
-        <InputField
-          icon={<DollarSign className="h-5 w-5 text-orange-500 dark:text-orange-400" />}
-          label="Annual Property Tax"
-          value={propertyTax}
-          onChange={setPropertyTax}
-          step={100}
-        />
-        <InputField
-          icon={<DollarSign className="h-5 w-5 text-orange-500 dark:text-orange-400" />}
-          label="Annual Home Insurance"
-          value={homeInsurance}
-          onChange={setHomeInsurance}
-          step={100}
-        />
-        <button
-          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          onClick={handleCalculate}
-        >
-          Calculate
-        </button>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 bg-gray-50 dark:bg-gray-900">
+      <div className="lg:col-span-2">
+        <BitcoinTicker /> 
       </div>
-
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4 text-red-600 dark:text-red-400">Summary</h2>
-        <p className="mb-2 text-gray-700 dark:text-gray-300">Loan Amount: {formatCurrency(loanAmount)}</p>
-        <p className="mb-2 text-gray-700 dark:text-gray-300">Loan Payment: {formatCurrency(loanPayment)}</p>
-        <p className="mb-2 text-gray-700 dark:text-gray-300">Total Monthly Payment: {formatCurrency(totalMonthlyPayment)}</p>
-        <p className="mb-2 text-gray-700 dark:text-gray-300">Total Interest Paid: {formatCurrency(totalInterest)}</p>
-        <p className="mb-2 text-gray-700 dark:text-gray-300">Total Amount Paid: {formatCurrency(loanAmount + totalInterest)}</p>
-      </div>
-
-      {amortizationSchedule.length > 0 && (
-        <div className="col-span-2 mt-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md overflow-x-auto">
-          <h2 className="text-2xl font-bold mb-4 text-red-600 dark:text-red-400">Amortization Schedule</h2>
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 bg-orange-200 dark:bg-orange-800 font-bold uppercase text-sm text-orange-800 dark:text-orange-100 border-b border-orange-300 dark:border-orange-700">Month</th>
-                <th className="py-2 px-4 bg-orange-200 dark:bg-orange-800 font-bold uppercase text-sm text-orange-800 dark:text-orange-100 border-b border-orange-300 dark:border-orange-700">Loan Payment</th>
-                <th className="py-2 px-4 bg-orange-200 dark:bg-orange-800 font-bold uppercase text-sm text-orange-800 dark:text-orange-100 border-b border-orange-300 dark:border-orange-700">Total Payment</th>
-                <th className="py-2 px-4 bg-orange-200 dark:bg-orange-800 font-bold uppercase text-sm text-orange-800 dark:text-orange-100 border-b border-orange-300 dark:border-orange-700">Principal</th>
-                <th className="py-2 px-4 bg-orange-200 dark:bg-orange-800 font-bold uppercase text-sm text-orange-800 dark:text-orange-100 border-b border-orange-300 dark:border-orange-700">Interest</th>
-                <th className="py-2 px-4 bg-orange-200 dark:bg-orange-800 font-bold uppercase text-sm text-orange-800 dark:text-orange-100 border-b border-orange-300 dark:border-orange-700">Balance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {amortizationSchedule.map((row, index) => (
-                <tr key={index} className={index % 2 === 0 ? 'bg-orange-50 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}>
-                  <td className="py-2 px-4 border-b border-orange-200 dark:border-orange-900 text-gray-800 dark:text-gray-200">{row.month}</td>
-                  <td className="py-2 px-4 border-b border-orange-200 dark:border-orange-900 text-gray-800 dark:text-gray-200">{formatCurrency(row.payment)}</td>
-                  <td className="py-2 px-4 border-b border-orange-200 dark:border-orange-900 text-gray-800 dark:text-gray-200">{formatCurrency(row.totalPayment)}</td>
-                  <td className="py-2 px-4 border-b border-orange-200 dark:border-orange-900 text-gray-800 dark:text-gray-200">{formatCurrency(row.principal)}</td>
-                  <td className="py-2 px-4 border-b border-orange-200 dark:border-orange-900 text-gray-800 dark:text-gray-200">{formatCurrency(row.interest)}</td>
-                  <td className="py-2 px-4 border-b border-orange-200 dark:border-orange-900 text-gray-800 dark:text-gray-200">{formatCurrency(row.balance)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <div className="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <MortgageInputs data={mortgageData} onChange={setMortgageData} />
+          <div className="mt-6 space-y-4">
+            <div className="flex flex-col space-y-2">
+              <input
+                type="text"
+                value={newCostName}
+                onChange={(e) => setNewCostName(e.target.value)}
+                placeholder="Cost Name"
+                className="w-full border p-2 rounded text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700"
+              />
+              <input
+                type="number"
+                value={newCostValue}
+                onChange={(e) =>
+                  setNewCostValue(
+                    e.target.value === "" ? "" : Number(e.target.value)
+                  )
+                }
+                placeholder="Cost Value (Denominate in monthly value)"
+                className="w-full border p-2 rounded text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700"
+              />
+            </div>
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+              <button
+                onClick={handleAddCost}
+                className="w-full sm:w-1/2 px-4 py-2 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gradient-to-r hover:from-pink-500 hover:via-red-500 hover:to-yellow-500 hover:text-white transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              >
+                Add Cost
+              </button>
+              <button
+                onClick={handleClearCosts}
+                className="w-full sm:w-1/2 px-4 py-2 bg-red-500 dark:bg-red-700 text-white rounded-md hover:bg-red-600 dark:hover:bg-red-800 transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+              >
+                Clear All
+              </button>
+            </div>
+          </div>
         </div>
+        <MortgageSummary
+          principal={calculationResult.loanAmount}
+          loanPayment={calculationResult.loanPayment}
+          totalMonthlyPayment={calculationResult.totalMonthlyPayment}
+          totalInterest={calculationResult.totalInterest}
+          totalCostOfOwnership={calculationResult.totalCostOfOwnership}
+          totalCost={calculationResult.totalCost}
+          downPayment={calculationResult.downPayment}
+          homePrice={mortgageData.homePrice}
+          additionalCosts={mortgageData.additionalCosts}
+          extraPayment={extraPayment}
+          actualLoanTermYears={calculationResult.actualLoanTermYears}
+        />
+      </div>
+      {isDataFilled && (
+        <>
+          <div className="lg:col-span-2 bg-white p-4 dark:bg-gray-800 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4 text-red-600 dark:text-red-400">
+              Loan Balance Over Time
+            </h2>
+            <LoanBalanceChart
+              data={yearlyData}
+              principal={calculationResult.loanAmount}
+              loanTermYears={mortgageData.loanTermYears}
+              extraPayment={extraPayment}
+            />
+          </div>
+          <div className="lg:col-span-2 bg-white p-4 dark:bg-gray-800 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4 text-red-600 dark:text-red-400">
+              Monthly Payment Breakdown
+            </h2>
+            <PaymentBreakdownChart data={paymentBreakdown} />
+          </div>
+          <div className="lg:col-span-2 bg-white p-4 dark:bg-gray-800 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4 text-red-600 dark:text-red-400">
+              Principal vs Interest Payments
+            </h2>
+            <PrincipalVsInterestChart
+              data={yearlyData}
+              loanTermYears={calculationResult.actualLoanTermYears}
+              extraPayment={extraPayment}
+              onExtraPaymentChange={handleExtraPaymentChange}
+            />
+          </div>
+          <div className="lg:col-span-2 bg-white p-4 dark:bg-gray-800 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4 text-red-600 dark:text-red-400">
+              Home Value and Equity Over Time
+            </h2>
+            <EquityBuildupChart
+              data={yearlyData}
+              homePrice={mortgageData.homePrice}
+              downPayment={mortgageData.downPayment}
+              extraPayment={extraPayment}
+            />
+          </div>
+          <div className="lg:col-span-2 bg-white p-4 dark:bg-gray-800 rounded-lg shadow-md">
+            <AmortizationSchedule
+              data={yearlyData}
+              homePrice={mortgageData.homePrice}
+              downPayment={mortgageData.downPayment}
+              propertyTax={mortgageData.propertyTax}
+              homeInsurance={mortgageData.homeInsurance}
+              hoa={mortgageData.hoa}
+              appreciationRate={mortgageData.homeAppreciationRate}
+              loanPayment={calculationResult.loanPayment}
+              additionalCosts={mortgageData.additionalCosts}
+              totalMonthlyPayment={calculationResult.totalMonthlyPayment}
+              extraPayment={extraPayment}
+            />
+          </div>
+        </>
       )}
     </div>
   );

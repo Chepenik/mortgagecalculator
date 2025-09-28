@@ -22,11 +22,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      rgb(var(--background-start-rgb)),
-      rgb(var(--background-end-rgb))
-    );
+  background: linear-gradient(to bottom, rgb(var(--background-start-rgb)), rgb(var(--background-end-rgb)));
 }
 
 .input-field {
@@ -44,4 +40,19 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  .smooth-transition {
+    transition: all 0.2s ease-in-out;
+  }
+
+  .hover-scale {
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+button,
+input {
+  @apply smooth-transition;
 }

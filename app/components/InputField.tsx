@@ -11,7 +11,10 @@ export interface InputFieldProps {
 
 const InputField: React.FC<InputFieldProps> = ({ icon, label, value, onChange, step = 1, min = 0 }) => (
   <div className="mb-4">
-    <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300" htmlFor={label}>
+    <label
+      htmlFor={label}
+      className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+    >
       {label}
     </label>
     <div className="relative rounded-md shadow-sm">
@@ -22,7 +25,7 @@ const InputField: React.FC<InputFieldProps> = ({ icon, label, value, onChange, s
         type="number"
         name={label}
         id={label}
-        className="block w-full pl-10 pr-3 py-2 sm:text-sm border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-gray-700"
+        className="block w-full pl-12 pr-3 py-2 sm:text-sm border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-gray-700"
         value={value}
         onChange={(e) => {
           const newValue = e.target.value === '' ? 0 : parseFloat(e.target.value);
