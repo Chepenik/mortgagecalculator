@@ -5,8 +5,8 @@ run = "npm run dev"
 channel = "stable-24_05"
 
 [deployment]
-run = ["sh", "-c", "npm run dev"]
-deploymentTarget = "cloudrun"
+run = ["npm", "start", "--", "-p", "5000"]
+deploymentTarget = "autoscale"
 
 [[ports]]
 localPort = 3000
