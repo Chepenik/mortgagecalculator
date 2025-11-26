@@ -241,12 +241,9 @@ const MortgageCalculator: React.FC = () => {
           totalMonthlyPayment={calculationResult.totalMonthlyPayment}
           totalInterest={calculationResult.totalInterest}
           totalCostOfOwnership={calculationResult.totalCostOfOwnership}
-          totalCost={calculationResult.totalCost}
           downPayment={calculationResult.downPayment}
           homePrice={mortgageData.homePrice}
           additionalCosts={mortgageData.additionalCosts}
-          extraPayment={extraPayment}
-          actualLoanTermYears={calculationResult.actualLoanTermYears}
         />
       </div>
       {isDataFilled && (
@@ -287,7 +284,6 @@ const MortgageCalculator: React.FC = () => {
               data={yearlyData}
               homePrice={mortgageData.homePrice}
               downPayment={mortgageData.downPayment}
-              extraPayment={extraPayment}
             />
           </div>
           <div className="lg:col-span-2 bg-white p-4 dark:bg-gray-800 rounded-lg shadow-md">
@@ -302,7 +298,6 @@ const MortgageCalculator: React.FC = () => {
               loanPayment={calculationResult.loanPayment}
               additionalCosts={mortgageData.additionalCosts}
               totalMonthlyPayment={calculationResult.totalMonthlyPayment}
-              extraPayment={extraPayment}
             />
           </div>
         </>
