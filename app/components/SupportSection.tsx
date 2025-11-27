@@ -35,7 +35,7 @@ const SupportSection: React.FC = () => {
               <h3 className="text-2xl font-bold text-white">Bitcoin Coloring Book</h3>
             </div>
             <p className="text-gray-300 mb-4 leading-relaxed">
-              Teach kids (and curious adults) about sound money principles through beautiful art. Learn why Bitcoin matters for your family's financial future while enjoying quality time together.
+              Teach kids (and curious adults) about sound money principles through beautiful art. Learn why Bitcoin matters for your family&apos;s financial future while enjoying quality time together.
             </p>
             <ul className="space-y-2 mb-6 text-sm text-gray-300">
               <li className="flex items-center gap-2">

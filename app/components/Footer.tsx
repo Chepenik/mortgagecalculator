@@ -6,7 +6,7 @@ const Footer = () => (
     © {new Date().getFullYear()} Ultimate Mortgage Calculator. All rights
     reserved.
     <div className="mt-2">
-      <p>Connect with this app's creator:</p>
+      <p>Connect with this app&apos;s creator:</p>
       <a
         href="https://www.linkedin.com/in/conorchepenik/"
         target="_blank"
