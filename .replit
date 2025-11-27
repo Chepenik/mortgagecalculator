@@ -5,20 +5,12 @@ run = "npm run dev"
 channel = "stable-24_05"
 
 [deployment]
-run = ["npm", "run", "start", "--", "--hostname", "0.0.0.0", "--port", "5000"]
+run = ["npm", "run", "start", "--", "--hostname", "0.0.0.0", "--port", "3000"]
 deploymentTarget = "autoscale"
 build = ["npm", "run", "build"]
 
 [[ports]]
 localPort = 3000
-externalPort = 80
-
-[[ports]]
-localPort = 3001
-externalPort = 3001
-
-[[ports]]
-localPort = 5000
 externalPort = 80
 
 [agent]
@@ -42,8 +34,8 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm run dev -- --hostname 0.0.0.0 --port 5000"
-waitForPort = 5000
+args = "npm run dev -- --hostname 0.0.0.0 --port 3000"
+waitForPort = 3000
 
 [workflows.workflow.metadata]
 outputType = "webview"
