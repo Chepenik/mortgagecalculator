@@ -2,6 +2,8 @@
 
 This is a comprehensive mortgage calculator web application built with Next.js that provides users with detailed mortgage payment calculations and financial analysis tools. The app offers both basic mortgage calculations and premium features, including unique Bitcoin-related financial analysis. It's designed as a modern, responsive single-page application with dark/light theme support and interactive data visualizations.
 
+**CRITICAL: This Next.js app deploys on port 3000 (not 5000). Do not change port configuration.**
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
@@ -39,6 +41,12 @@ The application includes a freemium model with:
 - Lazy loading for the main calculator component
 - Memoized calculations to prevent unnecessary re-renders
 - Responsive design optimized for mobile and desktop
+
+## Deployment Configuration
+- **Port**: 3000 (Next.js production standard on this Replit setup)
+- **Build command**: npm run build
+- **Start command**: next start on port 3000
+- **Target**: Autoscale deployment
 
 # External Dependencies
 
