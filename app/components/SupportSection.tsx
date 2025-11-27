@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Heart, BookOpen } from "lucide-react";
+import { Heart, BookOpen, CreditCard } from "lucide-react";
 
 const SupportSection: React.FC = () => {
   return (
@@ -18,11 +18,11 @@ const SupportSection: React.FC = () => {
             Support the Project
           </h2>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            This calculator helps you make smarter financial decisions. If it&apos;s provided value, here are two ways you can support my work and keep building cool projects.
+            This calculator helps you make smarter financial decisions. If it&apos;s provided value, here are three ways you can support my work and keep building cool projects.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {/* Bitcoin Coloring Book */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -104,6 +104,47 @@ const SupportSection: React.FC = () => {
               100% goes toward keeping these projects free and ad&apos;free
             </p>
           </motion.div>
+
+          {/* Gemini Credit Card */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 border border-blue-500/30 rounded-xl p-8 hover:border-blue-500/50 transition-all duration-300"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <CreditCard className="h-8 w-8 text-blue-400" />
+              <h3 className="text-2xl font-bold text-white">Gemini Credit Card</h3>
+            </div>
+            <p className="text-gray-300 mb-4 leading-relaxed">
+              Earn Bitcoin on everyday purchases with the Gemini credit card. Use my referral code to sign up and get an extra $50 in Bitcoin to start your journey.
+            </p>
+            <ul className="space-y-2 mb-6 text-sm text-gray-300">
+              <li className="flex items-center gap-2">
+                <span className="text-blue-400">✓</span>
+                <span>Earn Bitcoin rewards on all purchases</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-blue-400">✓</span>
+                <span>Get $50 in Bitcoin with referral code</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-blue-400">✓</span>
+                <span>Build Bitcoin wealth automatically</span>
+              </li>
+            </ul>
+            <a
+              href="https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold rounded-lg transition-all duration-200 text-center hover:scale-105 transform"
+            >
+              Earn Bitcoin Today
+            </a>
+            <p className="text-xs text-gray-400 mt-4 text-center italic">
+              Great way to earn Bitcoin on everyday spending
+            </p>
+          </motion.div>
         </div>
 
         <motion.div
@@ -113,7 +154,7 @@ const SupportSection: React.FC = () => {
           className="mt-8 p-6 bg-gray-800/50 border border-gray-700/50 rounded-lg text-center"
         >
           <p className="text-gray-300 text-sm">
-            Whether you grab the coloring book for your family or support development directly—
+            Whether you grab the coloring book, support development directly, or earn Bitcoin on everyday purchases—
             <span className="text-orange-400 font-semibold"> thank you for believing in building better financial tools</span>.
           </p>
         </motion.div>
