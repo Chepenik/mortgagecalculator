@@ -93,7 +93,7 @@ const SupportSection: React.FC = () => {
               </li>
             </ul>
             <a
-              href="https://buymeacoffee.com"
+              href="https://ko-fi.com/chepenik"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block w-full px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-bold rounded-lg transition-all duration-200 text-center hover:scale-105 transform"
