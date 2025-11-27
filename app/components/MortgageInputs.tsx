@@ -2,8 +2,25 @@ import React from 'react';
 import { DollarSign, Percent, Calendar, Home, Shield } from "lucide-react";
 import InputField from "./InputField";
 
-const MortgageInputs = ({ data, onChange }) => {
-  const handleInputChange = (name) => (value) => {
+interface MortgageData {
+  homePrice: number;
+  downPayment: number;
+  annualInterestRate: number;
+  loanTermYears: number;
+  propertyTax: number;
+  homeInsurance: number;
+  hoa: number;
+  homeAppreciationRate: number;
+  additionalCosts: { name: string; value: number }[];
+}
+
+interface MortgageInputsProps {
+  data: MortgageData;
+  onChange: (data: MortgageData) => void;
+}
+
+const MortgageInputs: React.FC<MortgageInputsProps> = ({ data, onChange }) => {
+  const handleInputChange = (name: keyof MortgageData) => (value: number) => {
     onChange({ ...data, [name]: value });
   };
 
