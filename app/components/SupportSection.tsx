@@ -18,7 +18,7 @@ const SupportSection: React.FC = () => {
             Support the Project
           </h2>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            This calculator helps you make smarter financial decisions. If it's provided value, here are two ways you can support my work and keep building cool projects.
+            This calculator helps you make smarter financial decisions. If it&apos;s provided value, here are two ways you can support my work and keep building cool projects.
           </p>
         </motion.div>
 
@@ -101,7 +101,7 @@ const SupportSection: React.FC = () => {
               Support My Work
             </a>
             <p className="text-xs text-gray-400 mt-4 text-center italic">
-              100% goes toward keeping these projects free and ad-free
+              100% goes toward keeping these projects free and ad&apos;free
             </p>
           </motion.div>
         </div>
