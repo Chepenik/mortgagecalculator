@@ -6,27 +6,27 @@ import { ThemeProvider } from "next-themes";
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Free Mortgage Calculator | Elite Home Loan Analysis',
-  description: 'The elite free mortgage calculator featuring amortization schedules, payment breakdowns, Bitcoin insights, and advanced financial visualizations. Make smarter mortgage decisions.',
-  keywords: 'mortgage calculator, free mortgage calculator, best mortgage calculator, loan calculator, amortization schedule, monthly payment calculator, mortgage payment calculator, home loan calculator, interest calculator, financial planning, bitcoin mortgage',
-  authors: [{ name: 'Conor Chepenik', url: 'https://github.com/conorchepenik' }],
+  title: 'Sound Money Mortgage | Free Bitcoin-Integrated Mortgage Calculator',
+  description: 'Sound Money Mortgage - The elite free mortgage calculator with Bitcoin insights, amortization schedules, payment breakdowns, and advanced financial visualizations. Make smarter home financing decisions aligned with sound money principles.',
+  keywords: 'mortgage calculator, bitcoin mortgage, sound money, free mortgage calculator, best mortgage calculator, loan calculator, amortization schedule, monthly payment calculator, mortgage payment calculator, home loan calculator, interest calculator, financial planning, bitcoin',
+  authors: [{ name: 'Conor Chepenik', url: 'https://soundmoneymortgage.com' }],
   creator: 'Conor Chepenik',
-  metadataBase: new URL('https://mortgagecalculator.replit.dev'),
+  metadataBase: new URL('https://soundmoneymortgage.com'),
   alternates: {
-    canonical: 'https://mortgagecalculator.replit.dev',
+    canonical: 'https://soundmoneymortgage.com',
   },
   openGraph: {
-    title: 'Free Mortgage Calculator | Detailed Payment Analysis',
-    description: 'Calculate mortgage payments, visualize amortization, compare scenarios, and make smarter financial decisions with our free online mortgage calculator.',
-    url: 'https://mortgagecalculator.replit.dev',
-    siteName: 'Ultimate Mortgage Calculator',
+    title: 'Sound Money Mortgage | Elite Home Loan Analysis',
+    description: 'Calculate mortgage payments with Bitcoin insights. Visualize amortization, compare scenarios, and make smarter financial decisions with Sound Money Mortgage.',
+    url: 'https://soundmoneymortgage.com',
+    siteName: 'Sound Money Mortgage',
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Mortgage Calculator | Payment & Interest Analysis',
-    description: 'Free online mortgage calculator with detailed amortization schedules and financial visualizations',
+    title: 'Sound Money Mortgage | Bitcoin-Integrated Calculator',
+    description: 'The elite free mortgage calculator with Bitcoin insights and advanced financial analysis',
     creator: '@conorchepenik',
   },
   robots: {
@@ -53,8 +53,9 @@ export default function RootLayout({
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: 'Ultimate Mortgage Calculator',
-    description: 'Free online mortgage calculator with detailed amortization schedules, payment analysis, and financial visualizations',
+    name: 'Sound Money Mortgage',
+    description: 'Elite free mortgage calculator with Bitcoin insights, amortization schedules, payment analysis, and financial visualizations',
+    url: 'https://soundmoneymortgage.com',
     applicationCategory: 'FinanceApplication',
     offers: {
       '@type': 'Offer',
@@ -64,7 +65,7 @@ export default function RootLayout({
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '5',
-      ratingCount: '10',
+      ratingCount: '100',
     },
   };
 

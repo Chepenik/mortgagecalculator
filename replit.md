@@ -1,8 +1,10 @@
 # Overview
 
-This is a comprehensive mortgage calculator web application built with Next.js that provides users with detailed mortgage payment calculations and financial analysis tools. The app offers both basic mortgage calculations and premium features, including unique Bitcoin-related financial analysis. It's designed as a modern, responsive single-page application with dark/light theme support and interactive data visualizations.
+**Sound Money Mortgage** is an elite, free mortgage calculator web application built with Next.js. It provides users with detailed mortgage payment calculations and advanced financial analysis tools with a unique Bitcoin integration. The app features a premium, responsive design with dark/light theme support, interactive data visualizations, and monetization through Bitcoin coloring book sales, direct support via Ko-fi, and Gemini credit card referrals.
 
-**CRITICAL: This Next.js app deploys on port 3000 (not 5000). Do not change port configuration.**
+**Domain**: soundmoneymortgage.com
+**Deployment**: Port 3000 (Next.js production standard - do NOT change)
+**CRITICAL: Do NOT change port to 5000 - app deploys correctly on 3000**
 
 # User Preferences
 

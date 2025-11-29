@@ -38,7 +38,7 @@ export default function Home() {
               '@type': 'ListItem',
               position: 1,
               name: 'Home',
-              item: 'https://mortgagecalculator.replit.dev',
+              item: 'https://soundmoneymortgage.com',
             },
           ],
         })}
