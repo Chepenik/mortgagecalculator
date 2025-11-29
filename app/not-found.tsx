@@ -32,7 +32,7 @@ export default function NotFound() {
             Lost in the Market?
           </h1>
           <p className="text-xl text-gray-700 dark:text-gray-300">
-            This page doesn't exist, but your financial future can.
+            This page doesn&apos;t exist, but your financial future can.
           </p>
         </motion.div>
 
@@ -52,7 +52,7 @@ export default function NotFound() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-lg text-gray-600 dark:text-gray-400 mb-12 max-w-xl mx-auto"
         >
-          But don't worry—head back to the calculator, or connect with me on one of these platforms to talk sound money.
+          But don&apos;t worry—head back to the calculator, or connect with me on one of these platforms to talk sound money.
         </motion.p>
 
         {/* Back to Home Button */}
@@ -129,7 +129,7 @@ export default function NotFound() {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="text-sm text-gray-500 dark:text-gray-400 italic mt-12"
         >
-          Every lost page is a chance to find something better. Let's build sound money together.
+          Every lost page is a chance to find something better. Let&apos;s build sound money together.
         </motion.p>
       </div>
     </div>
