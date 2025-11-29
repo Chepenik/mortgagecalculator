@@ -6,9 +6,9 @@ import { ThemeProvider } from "next-themes";
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Free Mortgage Calculator | Calculate Payments & Compare Scenarios',
-  description: 'Advanced free mortgage calculator with amortization schedules, payment breakdowns, and financial visualizations. Estimate monthly payments, calculate total interest, and analyze your home loan with interactive charts.',
-  keywords: 'mortgage calculator, free mortgage calculator, loan calculator, amortization schedule, monthly payment calculator, mortgage payment calculator, home loan calculator, interest calculator, financial planning',
+  title: 'Free Mortgage Calculator | Elite Home Loan Analysis',
+  description: 'The elite free mortgage calculator featuring amortization schedules, payment breakdowns, Bitcoin insights, and advanced financial visualizations. Make smarter mortgage decisions.',
+  keywords: 'mortgage calculator, free mortgage calculator, best mortgage calculator, loan calculator, amortization schedule, monthly payment calculator, mortgage payment calculator, home loan calculator, interest calculator, financial planning, bitcoin mortgage',
   authors: [{ name: 'Conor Chepenik', url: 'https://github.com/conorchepenik' }],
   creator: 'Conor Chepenik',
   metadataBase: new URL('https://mortgagecalculator.replit.dev'),

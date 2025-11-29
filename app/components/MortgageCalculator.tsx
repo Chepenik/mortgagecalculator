@@ -8,6 +8,7 @@ import PaymentBreakdownChart from "./charts/PaymentBreakdownChart";
 import PrincipalVsInterestChart from "./charts/PrincipalVsInterestChart";
 import EquityBuildupChart from "./charts/EquityBuildupChart";
 import BitcoinTicker from "./BitcoinTicker";
+import CompactSupportBar from "./CompactSupportBar";
 import {
   generateAmortizationSchedule,
   calculateTotalCostOfOwnership,
@@ -302,6 +303,7 @@ const MortgageCalculator: React.FC = () => {
           </div>
         </>
       )}
+      <CompactSupportBar />
     </div>
   );
 };
