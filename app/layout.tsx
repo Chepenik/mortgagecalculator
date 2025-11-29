@@ -22,12 +22,21 @@ export const metadata: Metadata = {
     siteName: 'Sound Money Mortgage',
     type: 'website',
     locale: 'en_US',
+    images: [
+      {
+        url: 'https://i.nostr.build/FJegWmejLseJPFC6.png',
+        width: 1200,
+        height: 630,
+        alt: 'Sound Money Mortgage - Bitcoin vs Home Equity Wealth Comparison',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Sound Money Mortgage | Bitcoin-Integrated Calculator',
     description: 'The elite free mortgage calculator with Bitcoin insights and advanced financial analysis',
     creator: '@conorchepenik',
+    images: ['https://i.nostr.build/FJegWmejLseJPFC6.png'],
   },
   robots: {
     index: true,

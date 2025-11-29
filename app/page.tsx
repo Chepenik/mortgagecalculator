@@ -25,6 +25,16 @@ export default function Home() {
             </Suspense>
           </div>
           <SupportSection />
+          <div className="w-full px-4 sm:px-8 py-12">
+            <div className="flex justify-end">
+              <img
+                src="https://i.nostr.build/FJegWmejLseJPFC6.png"
+                alt="Sound Money Mortgage - Bitcoin vs Home Equity Wealth Comparison"
+                className="w-full sm:w-1/2 rounded-lg shadow-lg border-2 border-orange-300 dark:border-orange-500/50"
+                loading="lazy"
+              />
+            </div>
+          </div>
         </div>
         <Footer />
       </main>
