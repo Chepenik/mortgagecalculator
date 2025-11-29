@@ -18,7 +18,9 @@ const SupportSection: React.FC = () => {
             Support the Project
           </h2>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            This calculator helps you make smarter financial decisions. If it&apos;s provided value, here are three ways you can support my work and keep building cool projects.
+            This calculator helps you make smarter financial decisions. If
+            it&apos;s provided value, here are three ways you can support my
+            work and keep building cool projects.
           </p>
         </motion.div>
 
@@ -32,15 +34,22 @@ const SupportSection: React.FC = () => {
           >
             <div className="flex items-center gap-3 mb-4">
               <BookOpen className="h-8 w-8 text-orange-400" />
-              <h3 className="text-2xl font-bold text-white">Bitcoin Coloring Book</h3>
+              <h3 className="text-2xl font-bold text-white">
+                Bitcoin Coloring Book
+              </h3>
             </div>
             <p className="text-gray-300 mb-4 leading-relaxed">
-              Teach kids (and curious adults) about sound money principles through beautiful art. Learn why Bitcoin matters for your family&apos;s financial future while enjoying quality time together.
+              Teach kids (and curious adults) about sound money principles
+              through beautiful art. Learn why Bitcoin matters for your
+              family&apos;s financial future while enjoying quality time
+              together.
             </p>
             <ul className="space-y-2 mb-6 text-sm text-gray-300">
               <li className="flex items-center gap-2">
                 <span className="text-orange-400">✓</span>
-                <span>Beautiful illustrations paired with Bitcoin education</span>
+                <span>
+                  Beautiful illustrations paired with Bitcoin education
+                </span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-orange-400">✓</span>
@@ -76,7 +85,9 @@ const SupportSection: React.FC = () => {
               <h3 className="text-2xl font-bold text-white">Direct Support</h3>
             </div>
             <p className="text-gray-300 mb-4 leading-relaxed">
-              If this mortgage calculator saved you time or helped you make a better financial decision, consider a direct contribution. Every bit helps fund new features and tools.
+              If this mortgage calculator saved you time or helped you make a
+              better financial decision, consider a direct contribution. Every
+              bit helps fund new features and tools.
             </p>
             <ul className="space-y-2 mb-6 text-sm text-gray-300">
               <li className="flex items-center gap-2">
@@ -114,10 +125,14 @@ const SupportSection: React.FC = () => {
           >
             <div className="flex items-center gap-3 mb-4">
               <CreditCard className="h-8 w-8 text-blue-400" />
-              <h3 className="text-2xl font-bold text-white">Gemini Credit Card</h3>
+              <h3 className="text-2xl font-bold text-white">
+                Gemini Credit Card
+              </h3>
             </div>
             <p className="text-gray-300 mb-4 leading-relaxed">
-              Earn Bitcoin on everyday purchases with the Gemini credit card. Use my referral code to sign up and get an extra $50 in Bitcoin to start your journey.
+              Earn Bitcoin on everyday purchases with the Gemini credit card.
+              Use my referral code to sign up and get an extra $50 in Bitcoin to
+              start your journey.
             </p>
             <ul className="space-y-2 mb-6 text-sm text-gray-300">
               <li className="flex items-center gap-2">
@@ -154,8 +169,13 @@ const SupportSection: React.FC = () => {
           className="mt-8 p-6 bg-gray-800/50 border border-gray-700/50 rounded-lg text-center"
         >
           <p className="text-gray-300 text-sm">
-            Whether you grab the coloring book, support development directly, or earn Bitcoin on everyday purchases—
-            <span className="text-orange-400 font-semibold"> thank you for believing in building better financial tools</span>.
+            Whether you grab the coloring book, support development directly, or
+            earn Bitcoin on everyday purchases,
+            <span className="text-orange-400 font-semibold">
+              {" "}
+              thank you for believing in building better financial tools
+            </span>
+            .
           </p>
         </motion.div>
       </div>
