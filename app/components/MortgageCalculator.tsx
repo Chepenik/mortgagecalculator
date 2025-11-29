@@ -7,6 +7,7 @@ import LoanBalanceChart from "./charts/LoanBalanceChart";
 import PaymentBreakdownChart from "./charts/PaymentBreakdownChart";
 import PrincipalVsInterestChart from "./charts/PrincipalVsInterestChart";
 import EquityBuildupChart from "./charts/EquityBuildupChart";
+import BitcoinWealthComparisonChart from "./charts/BitcoinWealthComparisonChart";
 import BitcoinTicker from "./BitcoinTicker";
 import CompactSupportBar from "./CompactSupportBar";
 import {
@@ -45,6 +46,7 @@ const MortgageCalculator: React.FC = () => {
   const [newCostName, setNewCostName] = useState("");
   const [newCostValue, setNewCostValue] = useState<number | "">(0);
   const [extraPayment, setExtraPayment] = useState(0);
+  const [bitcoinPrice, setBitcoinPrice] = useState<number | null>(null);
 
   const handleAddCost = () => {
     if (
@@ -194,7 +196,7 @@ const MortgageCalculator: React.FC = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 bg-gray-50 dark:bg-gray-900">
       <div className="lg:col-span-2">
-        <BitcoinTicker /> 
+        <BitcoinTicker onPriceUpdate={setBitcoinPrice} /> 
       </div>
       <div className="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
@@ -275,6 +277,20 @@ const MortgageCalculator: React.FC = () => {
               loanTermYears={calculationResult.actualLoanTermYears}
               extraPayment={extraPayment}
               onExtraPaymentChange={handleExtraPaymentChange}
+            />
+          </div>
+          <div className="lg:col-span-2 bg-white p-4 dark:bg-gray-800 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2">
+              ₿ Bitcoin Wealth vs Home Equity
+            </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              What if you invested your down payment in Bitcoin instead of using it for a down payment?
+            </p>
+            <BitcoinWealthComparisonChart
+              downPayment={mortgageData.downPayment}
+              yearlyData={yearlyData}
+              bitcoinPrice={bitcoinPrice}
+              loanTermYears={mortgageData.loanTermYears}
             />
           </div>
           <div className="lg:col-span-2 bg-white p-4 dark:bg-gray-800 rounded-lg shadow-md">

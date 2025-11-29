@@ -3,7 +3,11 @@ import React, { useState, useEffect } from "react";
 import { fetchBitcoinPrice } from "../utils/fetchBitcoinPrice";
 import { FaBitcoin } from "react-icons/fa";
 
-const BitcoinTicker: React.FC = () => {
+interface BitcoinTickerProps {
+  onPriceUpdate?: (price: number) => void;
+}
+
+const BitcoinTicker: React.FC<BitcoinTickerProps> = ({ onPriceUpdate }) => {
   const [bitcoinPrice, setBitcoinPrice] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -11,6 +15,9 @@ const BitcoinTicker: React.FC = () => {
     try {
       const price = await fetchBitcoinPrice();
       setBitcoinPrice(price);
+      if (onPriceUpdate) {
+        onPriceUpdate(price);
+      }
       setError(null);
     } catch (err) {
       setError("Failed to fetch Bitcoin price");
@@ -21,7 +28,7 @@ const BitcoinTicker: React.FC = () => {
     fetchPrice();
     const interval = setInterval(fetchPrice, 60000);
     return () => clearInterval(interval);
-  }, []);
+  }, [onPriceUpdate]);
 
   return (
     <div className="bg-orange-500 text-white p-4 rounded-lg shadow-md space-y-4">
