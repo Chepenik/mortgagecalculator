@@ -15,7 +15,7 @@ const BitcoinTicker: React.FC<BitcoinTickerProps> = ({ onPriceUpdate }) => {
     try {
       const price = await fetchBitcoinPrice();
       setBitcoinPrice(price);
-      if (onPriceUpdate) {
+      if (onPriceUpdate && price !== null) {
         onPriceUpdate(price);
       }
       setError(null);
