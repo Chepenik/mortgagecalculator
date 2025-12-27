@@ -1,0 +1,145 @@
+You are a senior security-focused web engineer. My site soundmoneymortgage.com is getting hammered by automated scanners and bot traffic (including WordPress probe paths like /wp-admin/setup-config.php). I need you to harden the app so bots can’t burn compute or spam endpoints, while keeping normal SEO intact.
+
+Step 0 — Inspect the project
+
+Before changing anything:
+
+Identify the framework (Next.js / Remix / Astro / Express / etc.)
+
+Identify where requests are handled (middleware, API routes, server functions)
+
+Identify “expensive” operations (any endpoint doing calculations, rendering charts, calling external APIs, LLMs, etc.)
+
+Then implement the following in a way that matches the actual stack.
+
+A) Block scanner paths at the edge (must happen before app logic)
+
+Implement edge blocking so these paths never reach app code:
+
+Block with 410 Gone (or 404) for:
+
+/wp-admin/*, /wordpress/*, /wp-login.php, /xmlrpc.php
+
+Any request ending with .php
+
+/.env, /config, /phpmyadmin, /admin, /server-status
+
+Also block common traversal patterns:
+
+.., %2e%2e, %2f, // (double slashes) where appropriate
+
+Goal: These requests should be answered instantly without touching server compute.
+
+B) Add global rate limiting (cheap + effective)
+
+Add a global limiter, per IP:
+
+Example: 120 requests/minute/IP for normal pages
+
+Burst control: token bucket or sliding window
+
+Return 429 Too Many Requests with a simple response:
+
+HTML for pages
+
+JSON for API routes
+
+This must work in production (stateless environment). Prefer a persistent store.
+
+C) Add strict rate limiting on expensive routes
+
+Find and protect any endpoints involved in the mortgage calculator or any API routes.
+
+Apply stricter limits, per IP:
+
+10 requests/minute/IP for expensive endpoints
+
+50 requests/day/IP for anonymous use
+
+If no API routes exist (pure client-side calculator), still protect:
+
+Any server-rendered routes
+
+Any analytics / contact / donation endpoints
+
+Any “share image” or OG image generation routes
+
+D) Compute guardrails (stop bots from burning resources)
+
+For any endpoint that does real work:
+
+Add timeouts using AbortController (max 10–15 seconds)
+
+Add payload size limits:
+
+Reject request bodies > 10KB (or smaller if reasonable)
+
+Add input validation (zod or equivalent):
+
+mortgage amount, rate, term must be sane bounds
+
+reject NaN/infinite/very large numbers
+
+Add caching:
+
+Cache responses for identical inputs (loan amount, rate, term, down payment, etc.)
+
+TTL 1–7 days depending on endpoint
+
+Use a stable cache key hash of inputs
+
+If you fetch any external data (e.g., BTC price or rate data):
+
+Cache that too (e.g., BTC price for 60–300 seconds)
+
+E) Bot heuristics (lightweight, don’t break real users)
+
+Add a risk score and block/limit harder when suspicious:
+
+Examples:
+
+Empty or missing User-Agent
+
+No Accept-Language + no Sec-Fetch-* headers
+
+Very high request frequency to non-existent paths
+
+Requests to a long list of random paths
+
+Rules:
+
+Don’t block Googlebot/Bingbot based on UA alone
+
+Don’t rely solely on referrer headers (they’re spoofed)
+
+F) robots.txt + security headers
+
+Add or update robots.txt to disallow scanning paths:
+
+/wp-admin/
+
+/wordpress/
+
+/*.php$
+
+Add basic security headers:
+
+X-Content-Type-Options: nosniff
+
+X-Frame-Options: DENY
+
+Referrer-Policy: strict-origin-when-cross-origin
+
+Add a CSP that won’t break the site (start minimal)
+
+G) Observability: prove it worked
+
+Add structured logging (minimal):
+
+rate limit events: path + hashed IP + count
+
+blocked probes: path + hashed IP + UA
+
+expensive endpoint timing + cache hit/miss
+
+No storing raw IPs in logs if avoidable.

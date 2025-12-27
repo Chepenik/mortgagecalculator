@@ -39,10 +39,23 @@ const initialMortgageData: MortgageData = {
   additionalCosts: [],
 };
 
+import { MortgageInputSchema } from "../utils/validation";
+
 const MortgageCalculator: React.FC = () => {
   const [mortgageData, setMortgageData] = useState<MortgageData>(
     initialMortgageData
   );
+  
+  // Validation guardrail
+  const validatedData = useMemo(() => {
+    const result = MortgageInputSchema.safeParse(mortgageData);
+    if (!result.success) {
+      console.error("Invalid mortgage data:", result.error);
+      return initialMortgageData;
+    }
+    return result.data;
+  }, [mortgageData]);
+
   const [newCostName, setNewCostName] = useState("");
   const [newCostValue, setNewCostValue] = useState<number | "">(0);
   const [extraPayment, setExtraPayment] = useState(0);
@@ -110,15 +123,15 @@ const MortgageCalculator: React.FC = () => {
       totalMonthlyPayment: baseMonthlyPayment,
       totalInterest,
     } = generateAmortizationSchedule(
-      loanAmount,
-      mortgageData.annualInterestRate,
-      mortgageData.loanTermYears,
-      mortgageData.propertyTax,
-      mortgageData.homeInsurance,
-      mortgageData.hoa,
+      validatedData.homePrice - validatedData.downPayment,
+      validatedData.annualInterestRate,
+      validatedData.loanTermYears,
+      validatedData.propertyTax,
+      validatedData.homeInsurance,
+      validatedData.hoa,
       extraPayment
     );
-    const additionalCostsTotal = mortgageData.additionalCosts.reduce(
+    const additionalCostsTotal = validatedData.additionalCosts.reduce(
       (total, cost) => total + cost.value,
       0
     );
