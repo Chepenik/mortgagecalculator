@@ -39,7 +39,7 @@ const initialMortgageData: MortgageData = {
   additionalCosts: [],
 };
 
-import { MortgageInputSchema } from "../utils/validation";
+import { MortgageInputSchema, MortgageInput } from "../utils/validation";
 
 const MortgageCalculator: React.FC = () => {
   const [mortgageData, setMortgageData] = useState<MortgageData>(
@@ -53,7 +53,7 @@ const MortgageCalculator: React.FC = () => {
       console.error("Invalid mortgage data:", result.error);
       return initialMortgageData;
     }
-    return result.data;
+    return result.data as MortgageData;
   }, [mortgageData]);
 
   const [newCostName, setNewCostName] = useState("");
