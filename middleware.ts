@@ -39,7 +39,9 @@ export function middleware(request: NextRequest) {
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  response.headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://i.nostr.build; connect-src 'self' https://api.coingecko.com;");
+  
+  // Relaxed CSP for Recharts and other dynamic elements
+  response.headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://i.nostr.build; connect-src 'self' https://api.coingecko.com; frame-src 'self'; worker-src 'self' blob:;");
 
   return response;
 }
