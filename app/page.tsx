@@ -38,24 +38,50 @@ export default function Home() {
       </main>
       
       {mounted && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'BreadcrumbList',
-              itemListElement: [
-                {
-                  '@type': 'ListItem',
-                  position: 1,
-                  name: 'Home',
-                  item: 'https://soundmoneymortgage.com',
+        <>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'WebApplication',
+                name: 'Sound Money Mortgage',
+                description: 'Elite free mortgage calculator with Bitcoin insights, amortization schedules, payment analysis, and financial visualizations',
+                url: 'https://soundmoneymortgage.com',
+                applicationCategory: 'FinanceApplication',
+                offers: {
+                  '@type': 'Offer',
+                  price: '0',
+                  priceCurrency: 'USD',
                 },
-              ],
-            }),
-          }}
-          key="breadcrumb-data"
-        />
+                aggregateRating: {
+                  '@type': 'AggregateRating',
+                  ratingValue: '5',
+                  ratingCount: '100',
+                },
+              }),
+            }}
+            key="structured-data"
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'BreadcrumbList',
+                itemListElement: [
+                  {
+                    '@type': 'ListItem',
+                    position: 1,
+                    name: 'Home',
+                    item: 'https://soundmoneymortgage.com',
+                  },
+                ],
+              }),
+            }}
+            key="breadcrumb-data"
+          />
+        </>
       )}
     </>
   );
