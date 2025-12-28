@@ -12,7 +12,7 @@ const BLOCKED_TRAVERSAL = ['..', '%2e%2e', '%2f', '//'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const ip = request.ip || '127.0.0.1';
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1';
 
   // A. Block scanner paths and patterns (Stateless)
   const isBlockedPath = BLOCKED_PATHS.some(path => pathname.startsWith(path));
