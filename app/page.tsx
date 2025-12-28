@@ -37,20 +37,26 @@ export default function Home() {
         <Footer />
       </main>
       
-      <script type="application/ld+json" suppressHydrationWarning>
-        {JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'BreadcrumbList',
-          itemListElement: [
-            {
-              '@type': 'ListItem',
-              position: 1,
-              name: 'Home',
-              item: 'https://soundmoneymortgage.com',
-            },
-          ],
-        })}
-      </script>
+      {mounted && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                {
+                  '@type': 'ListItem',
+                  position: 1,
+                  name: 'Home',
+                  item: 'https://soundmoneymortgage.com',
+                },
+              ],
+            }),
+          }}
+          key="breadcrumb-data"
+        />
+      )}
     </>
   );
 }

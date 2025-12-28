@@ -84,6 +84,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          key="structured-data"
         />
       </head>
       <body className={inter.className}>
