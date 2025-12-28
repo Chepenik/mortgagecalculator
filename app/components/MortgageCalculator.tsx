@@ -131,7 +131,7 @@ const MortgageCalculator: React.FC = () => {
       validatedData.hoa,
       extraPayment
     );
-    const additionalCostsTotal = validatedData.additionalCosts.reduce(
+    const additionalCostsTotal = (validatedData.additionalCosts || []).reduce(
       (total, cost) => total + cost.value,
       0
     );

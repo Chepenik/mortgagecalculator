@@ -8,6 +8,11 @@ export const MortgageInputSchema = z.object({
   propertyTax: z.number().min(0).max(1000000),
   homeInsurance: z.number().min(0).max(1000000),
   hoa: z.number().min(0).max(1000000),
+  homeAppreciationRate: z.number().min(0).max(50).optional(),
+  additionalCosts: z.array(z.object({
+    name: z.string(),
+    value: z.number()
+  })).default([]),
   extraPayment: z.number().min(0).max(1000000).optional(),
 });
 
