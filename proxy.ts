@@ -10,7 +10,7 @@ const BLOCKED_PATHS = [
 const BLOCKED_EXTENSIONS = ['.php'];
 const BLOCKED_TRAVERSAL = ['..', '%2e%2e', '%2f', '//'];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1';
 
