@@ -1,11 +1,19 @@
 User-agent: *
 Allow: /
-Disallow: /wp-admin/
-Disallow: /wordpress/
-Disallow: /*.php$
+Disallow: 
+
+# Allow all search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
 
 # Sitemap location
-Sitemap: https://soundmoneymortgage.com/sitemap.xml
+Sitemap: https://mortgagecalculator.replit.dev/sitemap.xml
 
 # Crawl delay (optional - 1 second)
 Crawl-delay: 1

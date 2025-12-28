@@ -1,18 +1,15 @@
 "use client";
-import React, { useState, useMemo, useEffect } from "react";
-import dynamic from 'next/dynamic';
-
-const MortgageInputs = dynamic(() => import("./MortgageInputs"), { ssr: false });
-const MortgageSummary = dynamic(() => import("./MortgageSummary"), { ssr: false });
-const AmortizationSchedule = dynamic(() => import("./AmortizationSchedule"), { ssr: false });
-const LoanBalanceChart = dynamic(() => import("./charts/LoanBalanceChart"), { ssr: false });
-const PaymentBreakdownChart = dynamic(() => import("./charts/PaymentBreakdownChart"), { ssr: false });
-const PrincipalVsInterestChart = dynamic(() => import("./charts/PrincipalVsInterestChart"), { ssr: false });
-const EquityBuildupChart = dynamic(() => import("./charts/EquityBuildupChart"), { ssr: false });
-const BitcoinWealthComparisonChart = dynamic(() => import("./charts/BitcoinWealthComparisonChart"), { ssr: false });
-const BitcoinTicker = dynamic(() => import("./BitcoinTicker"), { ssr: false });
-const CompactSupportBar = dynamic(() => import("./CompactSupportBar"), { ssr: false });
-
+import React, { useState, useMemo } from "react";
+import MortgageInputs from "./MortgageInputs";
+import MortgageSummary from "./MortgageSummary";
+import AmortizationSchedule from "./AmortizationSchedule";
+import LoanBalanceChart from "./charts/LoanBalanceChart";
+import PaymentBreakdownChart from "./charts/PaymentBreakdownChart";
+import PrincipalVsInterestChart from "./charts/PrincipalVsInterestChart";
+import EquityBuildupChart from "./charts/EquityBuildupChart";
+import BitcoinWealthComparisonChart from "./charts/BitcoinWealthComparisonChart";
+import BitcoinTicker from "./BitcoinTicker";
+import CompactSupportBar from "./CompactSupportBar";
 import {
   generateAmortizationSchedule,
   calculateTotalCostOfOwnership,
@@ -42,23 +39,10 @@ const initialMortgageData: MortgageData = {
   additionalCosts: [],
 };
 
-import { MortgageInputSchema, MortgageInput } from "../utils/validation";
-
 const MortgageCalculator: React.FC = () => {
   const [mortgageData, setMortgageData] = useState<MortgageData>(
     initialMortgageData
   );
-  
-  // Validation guardrail
-  const validatedData = useMemo(() => {
-    const result = MortgageInputSchema.safeParse(mortgageData);
-    if (!result.success) {
-      console.error("Invalid mortgage data:", result.error);
-      return initialMortgageData;
-    }
-    return result.data as MortgageData;
-  }, [mortgageData]);
-
   const [newCostName, setNewCostName] = useState("");
   const [newCostValue, setNewCostValue] = useState<number | "">(0);
   const [extraPayment, setExtraPayment] = useState(0);
@@ -126,15 +110,15 @@ const MortgageCalculator: React.FC = () => {
       totalMonthlyPayment: baseMonthlyPayment,
       totalInterest,
     } = generateAmortizationSchedule(
-      validatedData.homePrice - validatedData.downPayment,
-      validatedData.annualInterestRate,
-      validatedData.loanTermYears,
-      validatedData.propertyTax,
-      validatedData.homeInsurance,
-      validatedData.hoa,
+      loanAmount,
+      mortgageData.annualInterestRate,
+      mortgageData.loanTermYears,
+      mortgageData.propertyTax,
+      mortgageData.homeInsurance,
+      mortgageData.hoa,
       extraPayment
     );
-    const additionalCostsTotal = (validatedData.additionalCosts || []).reduce(
+    const additionalCostsTotal = mortgageData.additionalCosts.reduce(
       (total, cost) => total + cost.value,
       0
     );
