@@ -1,0 +1,98 @@
+Console Error
+
+
+A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+See more info here: https://nextjs.org/docs/messages/react-hydration-error
+
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en" suppressHydrationWarning={true}>
+                          <head>
+                            <script
++                             type="application/ld+json"
+-                             type={null}
+                              dangerouslySetInnerHTML={{
++                               __html: "{\"@context\":\"https://schema.org\",\"@type\":\"WebApplication\",\"name\":\"..."
+-                               __html: ""
+                              }}
+-                             src="/__replco/static/devtools/injected.js"
+-                             onerror={"parent.postMessage({event:'error',payload:'script.onerror: Failed to load '+e..."}
+                            >
+                          ...
+                  ...
+app/layout.tsx (84:9) @ RootLayout
+
+
+  82 |     <html lang="en" suppressHydrationWarning>
+  83 |       <head>
+> 84 |         <script
+     |         ^
+  85 |           type="application/ld+json"
+  86 |           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+  87 |         />
+Call Stack
+19
+
+Hide 17 ignore-listed frame(s)
+<unknown>
+https://react.dev/link/hydration-mismatch
+createConsoleError
+node_modules/next/src/next-devtools/shared/console-error.ts (16:35)
+handleConsoleError
+node_modules/next/src/next-devtools/userspace/app/errors/use-error-handler.ts (31:31)
+console.error
+node_modules/next/src/next-devtools/userspace/app/errors/intercept-console-error.ts (33:27)
+Proxy.<anonymous>
+/__replco/static/devtools/injected.js (37:27)
+<unknown>
+node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js (5731:19)
+runWithFiberInDEV
+node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js (986:30)
+emitPendingHydrationWarnings
+node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js (5730:9)
+completeWork
+node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js (12862:18)
+runWithFiberInDEV
+node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js (989:13)
+completeUnitOfWork
+node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js (19133:19)
+performUnitOfWork
+node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js (19014:11)
+workLoopConcurrentByScheduler
+node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js (18991:9)
+renderRootConcurrent
+node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js (18973:15)
+performWorkOnRoot
+node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js (17834:11)
+performWorkOnRootViaSchedulerTask
+node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js (20384:7)
+MessagePort.performWorkUntilDeadline
+node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js (45:48)
+script
+<anonymous>
+RootLayout
+app/layout.tsx (84:9)

@@ -80,13 +80,11 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
+      <body className={inter.className}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-      </head>
-      <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
