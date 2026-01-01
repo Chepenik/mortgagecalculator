@@ -47,6 +47,16 @@ const LoanBalanceChart: React.FC<LoanBalanceChartDataProps> = ({ data, principal
       </div>
     );
   };
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <div style={{ height }} className="w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg" />;
+  }
+
   return (
     <ResponsiveContainer width="100%" height={height}>
       <LineChart 

@@ -49,6 +49,16 @@ const PrincipalVsInterestChart: React.FC<PrincipalVsInterestChartDataProps> = ({
     onExtraPaymentChange(Number(newExtraPayment));
     setNewExtraPayment("");
   };
+  const [isMounted, setIsMounted] = useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <div style={{ height }} className="w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg" />;
+  }
+
   return (
     <div>
       <div className="mb-4">

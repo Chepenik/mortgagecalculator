@@ -96,6 +96,16 @@ const BitcoinWealthComparisonChart: React.FC<BitcoinWealthComparisonChartProps> 
   const bitcoinWins = bitcoinFinal > equityFinal;
   const difference = Math.abs(bitcoinFinal - equityFinal);
 
+  const [isMounted, setIsMounted] = useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <div className="w-full h-[400px] bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg" />;
+  }
+
   return (
     <div className="w-full space-y-6">
       {/* Explanation */}

@@ -40,6 +40,16 @@ const EquityBuildupChart: React.FC<EquityBuildupChartProps> = ({ data, height = 
   // Fix data at year 0
   const fixedData = data.length > 0 ? [{ year: 0, homeValue: homePrice, equity: downPayment }, ...data] : data;
 
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <div style={{ height }} className="w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg" />;
+  }
+
   return (
     <ResponsiveContainer width="100%" height={height}>
       <ComposedChart data={fixedData} margin={{ top: 20, right: 40, left: 40, bottom: 20 }}>
