@@ -70,51 +70,55 @@ const EquityBuildupChart: React.FC<EquityBuildupChartProps> = ({
     return (
       <div
         style={{ height }}
-        className="w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg"
-      />
+        className="w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg flex items-center justify-center"
+      >
+        <p className="text-gray-400">Loading Chart...</p>
+      </div>
     );
   }
 
   return (
-    <ResponsiveContainer width="100%" height={height}>
-      <ComposedChart
-        data={fixedData}
-        margin={{ top: 20, right: 40, left: 40, bottom: 20 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          dataKey="year"
-          label={{ value: "Year", position: "insideBottomRight", offset: -5 }}
-          tick={{ fontSize: 12 }}
-        />
-        <YAxis
-          tickFormatter={formatYAxisTick}
-          label={{
-            value: "Value",
-            angle: -90,
-            position: "insideLeft",
-            offset: 10,
-          }}
-          tick={{ fontSize: 12 }}
-        />
-        <Tooltip content={<CustomTooltip />} />
-        <Legend verticalAlign="top" height={36} />
-        <Area
-          type="monotone"
-          dataKey="homeValue"
-          name="Home Value"
-          fill="#8884d6"
-          stroke="#8884d6"
-        />
-        <Line
-          type="monotone"
-          dataKey="equity"
-          name="Equity"
-          stroke="#ff7300"
-          strokeWidth={2}
-        />
-      </ComposedChart>
-    </ResponsiveContainer>
+    <div style={{ width: '100%', height: height, minHeight: height }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <ComposedChart
+          data={fixedData}
+          margin={{ top: 20, right: 40, left: 40, bottom: 20 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey="year"
+            label={{ value: "Year", position: "insideBottomRight", offset: -5 }}
+            tick={{ fontSize: 12 }}
+          />
+          <YAxis
+            tickFormatter={formatYAxisTick}
+            label={{
+              value: "Value",
+              angle: -90,
+              position: "insideLeft",
+              offset: 10,
+            }}
+            tick={{ fontSize: 12 }}
+          />
+          <Tooltip content={<CustomTooltip />} />
+          <Legend verticalAlign="top" height={36} />
+          <Area
+            type="monotone"
+            dataKey="homeValue"
+            name="Home Value"
+            fill="#8884d6"
+            stroke="#8884d6"
+          />
+          <Line
+            type="monotone"
+            dataKey="equity"
+            name="Equity"
+            stroke="#ff7300"
+            strokeWidth={2}
+          />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
 

@@ -105,7 +105,9 @@ const BitcoinWealthComparisonChart: React.FC<
 
   if (!isMounted) {
     return (
-      <div className="w-full h-[400px] bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg" />
+      <div className="w-full h-[400px] bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg flex items-center justify-center">
+        <p className="text-gray-400">Loading Chart...</p>
+      </div>
     );
   }
 
@@ -127,7 +129,6 @@ const BitcoinWealthComparisonChart: React.FC<
 
   return (
     <div className="w-full space-y-6">
-      {/* Explanation */}
       <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded">
         <p className="text-sm text-gray-700 dark:text-gray-300">
           <strong>Scenario:</strong> What if you invested your $
@@ -146,7 +147,6 @@ const BitcoinWealthComparisonChart: React.FC<
         </ul>
       </div>
 
-      {/* Bitcoin CAGR Slider Control */}
       <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-300 dark:border-orange-500/50 p-5 rounded-lg">
         <div className="flex items-center justify-between mb-4">
           <label className="text-sm font-bold text-gray-700 dark:text-gray-300">
@@ -190,49 +190,50 @@ const BitcoinWealthComparisonChart: React.FC<
         </p>
       </div>
 
-      {/* Chart */}
-      <ResponsiveContainer width="100%" height={400}>
-        <LineChart
-          data={comparisonData}
-          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-          <XAxis
-            dataKey="year"
-            label={{ value: "Year", position: "insideBottom", offset: -10 }}
-            tick={{ fontSize: 12 }}
-          />
-          <YAxis
-            tickFormatter={formatCurrency}
-            tick={{ fontSize: 12 }}
-            width={80}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend wrapperStyle={{ paddingTop: "20px" }} />
-          <Line
-            type="monotone"
-            dataKey="homeEquity"
-            name="🏠 Mortgage Equity (Principal)"
-            stroke="#3b82f6"
-            strokeWidth={2.5}
-            dot={{ r: 3 }}
-            activeDot={{ r: 6 }}
-            animationDuration={1500}
-          />
-          <Line
-            type="monotone"
-            dataKey="bitcoinValue"
-            name={`₿ Bitcoin Value (${bitcoinCAGR}% CAGR)`}
-            stroke="#f97316"
-            strokeWidth={2.5}
-            dot={{ r: 3 }}
-            activeDot={{ r: 6 }}
-            animationDuration={1500}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <div style={{ width: '100%', height: 400, minHeight: 400 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            data={comparisonData}
+            margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+            <XAxis
+              dataKey="year"
+              label={{ value: "Year", position: "insideBottom", offset: -10 }}
+              tick={{ fontSize: 12 }}
+            />
+            <YAxis
+              tickFormatter={formatCurrency}
+              tick={{ fontSize: 12 }}
+              width={80}
+             domain={[0, "auto"]}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend wrapperStyle={{ paddingTop: "20px" }} />
+            <Line
+              type="monotone"
+              dataKey="homeEquity"
+              name="🏠 Mortgage Equity (Principal)"
+              stroke="#3b82f6"
+              strokeWidth={2.5}
+              dot={{ r: 3 }}
+              activeDot={{ r: 6 }}
+              animationDuration={1500}
+            />
+            <Line
+              type="monotone"
+              dataKey="bitcoinValue"
+              name={`₿ Bitcoin Value (${bitcoinCAGR}% CAGR)`}
+              stroke="#f97316"
+              strokeWidth={2.5}
+              dot={{ r: 3 }}
+              activeDot={{ r: 6 }}
+              animationDuration={1500}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
 
-      {/* Insight Box */}
       <div
         className={`p-6 rounded-lg border-2 ${bitcoinWins ? "bg-orange-50 dark:bg-orange-900/20 border-orange-500" : "bg-blue-50 dark:bg-blue-900/20 border-blue-500"}`}
       >
