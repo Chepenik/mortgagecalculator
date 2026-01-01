@@ -1,6 +1,21 @@
-import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, TooltipProps } from 'recharts';
-import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
+"use client";
+
+import React from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  TooltipProps,
+} from "recharts";
+import {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 interface LoanBalanceChartDataProps {
   data: {
     year: number;
@@ -11,33 +26,51 @@ interface LoanBalanceChartDataProps {
   loanTermYears: number;
   extraPayment: number;
 }
-const LoanBalanceChart: React.FC<LoanBalanceChartDataProps> = ({ data, principal, height = 400, loanTermYears, extraPayment }) => {
+const LoanBalanceChart: React.FC<LoanBalanceChartDataProps> = ({
+  data,
+  principal,
+  height = 400,
+  loanTermYears,
+  extraPayment,
+}) => {
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const formatCurrency = (value: number): string => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      notation: 'compact',
-      compactDisplay: 'short',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      notation: "compact",
+      compactDisplay: "short",
       minimumFractionDigits: 0,
       maximumFractionDigits: 1,
     }).format(value);
   };
-  const sanitizeData = (data: { year: number; balance: number }[]): { year: number; balance: number }[] => 
-    data.map(entry => ({
+  const sanitizeData = (
+    data: { year: number; balance: number }[],
+  ): { year: number; balance: number }[] =>
+    data.map((entry) => ({
       ...entry,
-      balance: Math.max(entry.balance, 0)
+      balance: Math.max(entry.balance, 0),
     }));
   const sanitizedData = sanitizeData(data);
   const fullData = [{ year: 0, balance: principal }];
   for (let year = 1; year <= loanTermYears; year++) {
-    const existingData = sanitizedData.find(d => d.year === year);
+    const existingData = sanitizedData.find((d) => d.year === year);
     if (existingData) {
       fullData.push(existingData);
     } else {
       fullData.push({ year, balance: 0 });
     }
   }
-  const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({ active, payload, label }) => {
+  const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({
+    active,
+    payload,
+    label,
+  }) => {
     if (!active || !payload || payload.length === 0) return null;
     const balance = payload[0].value as number;
     return (
@@ -47,25 +80,25 @@ const LoanBalanceChart: React.FC<LoanBalanceChartDataProps> = ({ data, principal
       </div>
     );
   };
-  const [isMounted, setIsMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   if (!isMounted) {
-    return <div style={{ height }} className="w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg" />;
+    return (
+      <div
+        style={{ height }}
+        className="w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg"
+      />
+    );
   }
 
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <LineChart 
-        data={fullData} 
+      <LineChart
+        data={fullData}
         margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
       >
         <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-        <XAxis 
-          dataKey="year" 
+        <XAxis
+          dataKey="year"
           label={{ value: "Year", position: "insideBottom", offset: -10 }}
           tick={{ fontSize: 12 }}
           domain={[0, loanTermYears]}
@@ -76,23 +109,23 @@ const LoanBalanceChart: React.FC<LoanBalanceChartDataProps> = ({ data, principal
             value: "Balance",
             angle: -90,
             position: "insideLeft",
-            offset: -5
+            offset: -5,
           }}
           tickFormatter={formatCurrency}
           tick={{ fontSize: 12 }}
           width={80}
-          domain={[0, 'dataMax']}
+          domain={[0, "dataMax"]}
         />
         <Tooltip content={<CustomTooltip />} />
         <Legend wrapperStyle={{ paddingTop: "20px" }} />
-        <Line 
-          type="monotone" 
-          dataKey="balance" 
-          name="Loan Balance" 
-          stroke="#ffc658" 
-          strokeWidth={2} 
-          dot={{ r: 4, stroke: '#ffc658', strokeWidth: 1.5 }}
-          activeDot={{ r: 6, stroke: '#ffa000', strokeWidth: 2 }}
+        <Line
+          type="monotone"
+          dataKey="balance"
+          name="Loan Balance"
+          stroke="#ffc658"
+          strokeWidth={2}
+          dot={{ r: 4, stroke: "#ffc658", strokeWidth: 1.5 }}
+          activeDot={{ r: 6, stroke: "#ffa000", strokeWidth: 2 }}
           animationDuration={1500}
         />
       </LineChart>

@@ -1,5 +1,16 @@
-import React, { useState } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+"use client";
+
+import React, { useState } from "react";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import { Plus } from "lucide-react";
 interface PrincipalVsInterestChartDataProps {
   data: {
@@ -12,8 +23,20 @@ interface PrincipalVsInterestChartDataProps {
   extraPayment: number;
   onExtraPaymentChange: (amount: number) => void;
 }
-const PrincipalVsInterestChart: React.FC<PrincipalVsInterestChartDataProps> = ({ data, height = 400, loanTermYears, extraPayment, onExtraPaymentChange }) => {
+const PrincipalVsInterestChart: React.FC<PrincipalVsInterestChartDataProps> = ({
+  data,
+  height = 400,
+  loanTermYears,
+  extraPayment,
+  onExtraPaymentChange,
+}) => {
+  const [isMounted, setIsMounted] = useState(false);
   const [newExtraPayment, setNewExtraPayment] = useState("");
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const formatYAxisTick = (value: number) => {
     if (isNaN(value)) return "$0";
     if (value >= 1000000) {
@@ -23,15 +46,24 @@ const PrincipalVsInterestChart: React.FC<PrincipalVsInterestChartDataProps> = ({
     }
     return `$${value.toFixed(1)}`;
   };
-  const sanitizeData = (data: { year: number; principalPaid: number; interestPaid: number }[]): { year: number; principalPaid: number; interestPaid: number; extraPayments: number }[] => 
-    data.map(entry => ({
+  const sanitizeData = (
+    data: { year: number; principalPaid: number; interestPaid: number }[],
+  ): {
+    year: number;
+    principalPaid: number;
+    interestPaid: number;
+    extraPayments: number;
+  }[] =>
+    data.map((entry) => ({
       ...entry,
       principalPaid: Math.max(entry.principalPaid, 0),
       interestPaid: Math.max(entry.interestPaid, 0),
-      extraPayments: extraPayment * 12 * entry.year
+      extraPayments: extraPayment * 12 * entry.year,
     }));
   const sanitizedData = sanitizeData(data);
-  const fullData = sanitizedData.filter(entry => entry.principalPaid + entry.interestPaid > 0);
+  const fullData = sanitizedData.filter(
+    (entry) => entry.principalPaid + entry.interestPaid > 0,
+  );
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
@@ -49,14 +81,14 @@ const PrincipalVsInterestChart: React.FC<PrincipalVsInterestChartDataProps> = ({
     onExtraPaymentChange(Number(newExtraPayment));
     setNewExtraPayment("");
   };
-  const [isMounted, setIsMounted] = useState(false);
-
-  React.useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   if (!isMounted) {
-    return <div style={{ height }} className="w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg" />;
+    return (
+      <div
+        style={{ height }}
+        className="w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg"
+      />
+    );
   }
 
   return (
@@ -83,12 +115,15 @@ const PrincipalVsInterestChart: React.FC<PrincipalVsInterestChartDataProps> = ({
         </div>
       </div>
       <ResponsiveContainer width="100%" height={height}>
-        <AreaChart data={fullData} margin={{ top: 20, right: 40, left: 40, bottom: 50 }}>
+        <AreaChart
+          data={fullData}
+          margin={{ top: 20, right: 40, left: 40, bottom: 50 }}
+        >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis 
-            dataKey="year" 
+          <XAxis
+            dataKey="year"
             label={{ value: "Year", position: "insideBottom", offset: -5 }}
-            domain={[0, 'dataMax']} 
+            domain={[0, "dataMax"]}
             tick={{ fontSize: 12 }}
           />
           <YAxis
@@ -96,7 +131,7 @@ const PrincipalVsInterestChart: React.FC<PrincipalVsInterestChartDataProps> = ({
               value: "Amount",
               angle: -90,
               position: "insideLeft",
-              offset: 0
+              offset: 0,
             }}
             tickFormatter={formatYAxisTick}
             tick={{ fontSize: 12 }}
@@ -104,32 +139,32 @@ const PrincipalVsInterestChart: React.FC<PrincipalVsInterestChartDataProps> = ({
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend verticalAlign="top" height={36} />
-          <Area 
-            type="monotone" 
-            dataKey="extraPayments" 
-            name="Extra Payments" 
-            stackId="1" 
-            stroke="#9c27b0" 
+          <Area
+            type="monotone"
+            dataKey="extraPayments"
+            name="Extra Payments"
+            stackId="1"
+            stroke="#9c27b0"
             fillOpacity={0.6}
-            fill="#9c27b0" 
+            fill="#9c27b0"
           />
-          <Area 
-            type="monotone" 
-            dataKey="principalPaid" 
-            name="Principal" 
-            stackId="1" 
-            stroke="#8884d8" 
+          <Area
+            type="monotone"
+            dataKey="principalPaid"
+            name="Principal"
+            stackId="1"
+            stroke="#8884d8"
             fillOpacity={0.6}
-            fill="#8884d8" 
+            fill="#8884d8"
           />
-          <Area 
-            type="monotone" 
-            dataKey="interestPaid" 
-            name="Interest" 
-            stackId="1" 
-            stroke="#82ca9d" 
+          <Area
+            type="monotone"
+            dataKey="interestPaid"
+            name="Interest"
+            stackId="1"
+            stroke="#82ca9d"
             fillOpacity={0.6}
-            fill="#82ca9d" 
+            fill="#82ca9d"
           />
         </AreaChart>
       </ResponsiveContainer>

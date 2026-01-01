@@ -1,5 +1,14 @@
-import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+"use client";
+
+import React from "react";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 interface PaymentBreakdownChartDataProps {
   data: {
@@ -9,9 +18,18 @@ interface PaymentBreakdownChartDataProps {
   height?: number;
 }
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-const PaymentBreakdownChart: React.FC<PaymentBreakdownChartDataProps> = ({ data, height = 400 }) => {
+const PaymentBreakdownChart: React.FC<PaymentBreakdownChartDataProps> = ({
+  data,
+  height = 400,
+}) => {
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const payloadData = payload[0].payload;
@@ -25,22 +43,21 @@ const PaymentBreakdownChart: React.FC<PaymentBreakdownChartDataProps> = ({ data,
   };
 
   const formatIntlNumber = (value: number): string => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value);
   };
 
-  const [isMounted, setIsMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   if (!isMounted) {
-    return <div style={{ height }} className="w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg" />;
+    return (
+      <div
+        style={{ height }}
+        className="w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg"
+      />
+    );
   }
 
   return (
@@ -54,7 +71,9 @@ const PaymentBreakdownChart: React.FC<PaymentBreakdownChartDataProps> = ({ data,
           outerRadius={130}
           fill="#8884d8"
           dataKey="value"
-          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+          label={({ name, percent }) =>
+            `${name} ${(percent * 100).toFixed(0)}%`
+          }
           animationDuration={1500}
         >
           {data.map((entry, index) => (
