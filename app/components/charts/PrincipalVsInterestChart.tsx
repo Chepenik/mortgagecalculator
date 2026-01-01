@@ -12,7 +12,7 @@ interface PrincipalVsInterestChartDataProps {
   extraPayment: number;
   onExtraPaymentChange: (amount: number) => void;
 }
-const PrincipalVsInterestChart: React.FC<PrincipalVsInterestChartDataProps> = ({ data, height = 400, loanTermYears, extraPayment, onExtraPaymentChange }) => {
+const PrincipalVsInterestChart: React.FC<PrincipalVsInterestChartDataProps> = ({ data, loanTermYears, extraPayment, onExtraPaymentChange }) => {
   const [newExtraPayment, setNewExtraPayment] = useState("");
   const formatYAxisTick = (value: number) => {
     if (isNaN(value)) return "$0";
@@ -72,57 +72,59 @@ const PrincipalVsInterestChart: React.FC<PrincipalVsInterestChartDataProps> = ({
           </button>
         </div>
       </div>
-      <ResponsiveContainer width="100%" height={height}>
-        <AreaChart data={fullData} margin={{ top: 20, right: 40, left: 40, bottom: 50 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis 
-            dataKey="year" 
-            label={{ value: "Year", position: "insideBottom", offset: -5 }}
-            domain={[0, 'dataMax']} 
-            tick={{ fontSize: 12 }}
-          />
-          <YAxis
-            label={{
-              value: "Amount",
-              angle: -90,
-              position: "insideLeft",
-              offset: 0
-            }}
-            tickFormatter={formatYAxisTick}
-            tick={{ fontSize: 12 }}
-            width={80}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend verticalAlign="top" height={36} />
-          <Area 
-            type="monotone" 
-            dataKey="extraPayments" 
-            name="Extra Payments" 
-            stackId="1" 
-            stroke="#9c27b0" 
-            fillOpacity={0.6}
-            fill="#9c27b0" 
-          />
-          <Area 
-            type="monotone" 
-            dataKey="principalPaid" 
-            name="Principal" 
-            stackId="1" 
-            stroke="#8884d8" 
-            fillOpacity={0.6}
-            fill="#8884d8" 
-          />
-          <Area 
-            type="monotone" 
-            dataKey="interestPaid" 
-            name="Interest" 
-            stackId="1" 
-            stroke="#82ca9d" 
-            fillOpacity={0.6}
-            fill="#82ca9d" 
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+      <div className="w-full h-[300px] sm:h-[350px] md:h-[400px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={fullData} margin={{ top: 20, right: 40, left: 40, bottom: 50 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="year"
+              label={{ value: "Year", position: "insideBottom", offset: -5 }}
+              domain={[0, 'dataMax']}
+              tick={{ fontSize: 12 }}
+            />
+            <YAxis
+              label={{
+                value: "Amount",
+                angle: -90,
+                position: "insideLeft",
+                offset: 0
+              }}
+              tickFormatter={formatYAxisTick}
+              tick={{ fontSize: 12 }}
+              width={80}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend verticalAlign="top" height={36} />
+            <Area
+              type="monotone"
+              dataKey="extraPayments"
+              name="Extra Payments"
+              stackId="1"
+              stroke="#9c27b0"
+              fillOpacity={0.6}
+              fill="#9c27b0"
+            />
+            <Area
+              type="monotone"
+              dataKey="principalPaid"
+              name="Principal"
+              stackId="1"
+              stroke="#8884d8"
+              fillOpacity={0.6}
+              fill="#8884d8"
+            />
+            <Area
+              type="monotone"
+              dataKey="interestPaid"
+              name="Interest"
+              stackId="1"
+              stroke="#82ca9d"
+              fillOpacity={0.6}
+              fill="#82ca9d"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };

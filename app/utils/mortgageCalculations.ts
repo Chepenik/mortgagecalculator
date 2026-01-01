@@ -59,7 +59,7 @@ export const generateAmortizationSchedule = (
 };
 export const calculateTotalCostOfOwnership = (
   loanAmount: number,
-  totalInterest: number,
+  annualInterestRate: number,
   loanTermYears: number,
   propertyTax: number,
   homeInsurance: number,
@@ -69,16 +69,17 @@ export const calculateTotalCostOfOwnership = (
   additionalCosts: { name: string; value: number }[],
   extraPayment: number = 0
 ): { totalCost: number; netCost: number; actualLoanTermYears: number } => {
-  const { schedule } = generateAmortizationSchedule(
+  const { schedule, totalInterest } = generateAmortizationSchedule(
     loanAmount,
-    totalInterest / loanAmount / loanTermYears * 100,
+    annualInterestRate,
     loanTermYears,
     propertyTax,
     homeInsurance,
     hoa,
     extraPayment
   );
-  const actualLoanTermMonths = schedule.length;
+  const lastEntry = schedule[schedule.length - 1];
+  const actualLoanTermMonths = lastEntry.month;
   const actualLoanTermYears = actualLoanTermMonths / 12;
   const totalPayments = loanAmount + totalInterest;
   const totalTax = propertyTax * actualLoanTermYears;

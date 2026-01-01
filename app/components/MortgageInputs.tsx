@@ -32,6 +32,8 @@ const MortgageInputs: React.FC<MortgageInputsProps> = ({ data, onChange }) => {
         value={data.homePrice}
         onChange={handleInputChange('homePrice')}
         step={1000}
+        required
+        errorMessage="Home price is required"
       />
       <InputField
         icon={<DollarSign className="h-5 w-5 text-orange-500 dark:text-orange-400" />}
@@ -39,6 +41,8 @@ const MortgageInputs: React.FC<MortgageInputsProps> = ({ data, onChange }) => {
         value={data.downPayment}
         onChange={handleInputChange('downPayment')}
         step={1000}
+        max={data.homePrice}
+        errorMessage="Down payment cannot exceed home price"
       />
       <InputField
         icon={<Percent className="h-5 w-5 text-orange-500 dark:text-orange-400" />}
@@ -46,12 +50,19 @@ const MortgageInputs: React.FC<MortgageInputsProps> = ({ data, onChange }) => {
         value={data.annualInterestRate}
         onChange={handleInputChange('annualInterestRate')}
         step={0.1}
+        max={30}
+        required
+        errorMessage="Interest rate is required (max 30%)"
       />
       <InputField
         icon={<Calendar className="h-5 w-5 text-orange-500 dark:text-orange-400" />}
         label="Loan Term (Years)"
         value={data.loanTermYears}
         onChange={handleInputChange('loanTermYears')}
+        min={1}
+        max={50}
+        required
+        errorMessage="Loan term is required (1-50 years)"
       />
       <InputField
         icon={<Home className="h-5 w-5 text-orange-500 dark:text-orange-400" />}

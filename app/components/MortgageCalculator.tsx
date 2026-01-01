@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useMemo } from "react";
+import { X } from "lucide-react";
 import MortgageInputs from "./MortgageInputs";
 import MortgageSummary from "./MortgageSummary";
 import AmortizationSchedule from "./AmortizationSchedule";
@@ -81,6 +82,11 @@ const MortgageCalculator: React.FC = () => {
     setExtraPayment(0);
   };
 
+  const handleDeleteCost = (index: number) => {
+    const newCosts = mortgageData.additionalCosts.filter((_, i) => i !== index);
+    setMortgageData({ ...mortgageData, additionalCosts: newCosts });
+  };
+
   const handleExtraPaymentChange = (amount: number) => {
     setExtraPayment(amount);
   };
@@ -127,7 +133,7 @@ const MortgageCalculator: React.FC = () => {
     const { totalCost: totalCostOfOwnership, actualLoanTermYears } =
       calculateTotalCostOfOwnership(
         loanAmount,
-        totalInterest,
+        mortgageData.annualInterestRate,
         mortgageData.loanTermYears,
         mortgageData.propertyTax,
         mortgageData.homeInsurance,
@@ -236,6 +242,30 @@ const MortgageCalculator: React.FC = () => {
                 Clear All
               </button>
             </div>
+            {mortgageData.additionalCosts.length > 0 && (
+              <div className="mt-4 space-y-2">
+                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Additional Monthly Costs:
+                </h4>
+                {mortgageData.additionalCosts.map((cost, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded"
+                  >
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      {cost.name}: ${cost.value.toLocaleString()}/mo
+                    </span>
+                    <button
+                      onClick={() => handleDeleteCost(index)}
+                      className="p-1 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+                      aria-label={`Delete ${cost.name}`}
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
         <MortgageSummary

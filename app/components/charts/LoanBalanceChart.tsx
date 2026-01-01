@@ -11,7 +11,7 @@ interface LoanBalanceChartDataProps {
   loanTermYears: number;
   extraPayment: number;
 }
-const LoanBalanceChart: React.FC<LoanBalanceChartDataProps> = ({ data, principal, height = 400, loanTermYears, extraPayment }) => {
+const LoanBalanceChart: React.FC<LoanBalanceChartDataProps> = ({ data, principal, loanTermYears, extraPayment }) => {
   const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -48,8 +48,9 @@ const LoanBalanceChart: React.FC<LoanBalanceChartDataProps> = ({ data, principal
     );
   };
   return (
-    <ResponsiveContainer width="100%" height={height}>
-      <LineChart 
+    <div className="w-full h-[300px] sm:h-[350px] md:h-[400px]">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart 
         data={fullData} 
         margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
       >
@@ -85,8 +86,9 @@ const LoanBalanceChart: React.FC<LoanBalanceChartDataProps> = ({ data, principal
           activeDot={{ r: 6, stroke: '#ffa000', strokeWidth: 2 }}
           animationDuration={1500}
         />
-      </LineChart>
-    </ResponsiveContainer>
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
 export default LoanBalanceChart;
