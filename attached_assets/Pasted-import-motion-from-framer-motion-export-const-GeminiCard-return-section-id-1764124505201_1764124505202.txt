@@ -1,0 +1,105 @@
+import { motion } from 'framer-motion'
+
+export const GeminiCard = () => {
+  return (
+    <section id="gemini-card" className="py-20 px-4 bg-black border-b border-orange-500/20">
+      <div className="max-w-4xl mx-auto">
+        <motion.h2
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="text-3xl md:text-5xl font-black text-white mb-12 text-center retro-text"
+        >
+          Earn Bitcoin Back
+        </motion.h2>
+
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          {/* Left: Copy */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-6"
+          >
+            <p className="text-base text-slate-300 leading-relaxed">
+              Earn Bitcoin rewards on everyday purchases with the Gemini Credit Card. Stack sats on groceries, gas, travel, and more. No annual fee. Instant Bitcoin settlement.
+            </p>
+
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-bold text-orange-300 mb-2">Up to 3% Bitcoin Back</h3>
+                <ul className="space-y-2 text-sm text-slate-400">
+                  <li>• 3% on airfare and hotels</li>
+                  <li>• 2% on dining and gas</li>
+                  <li>• 1% on everything else</li>
+                </ul>
+              </div>
+
+              <div className="flex gap-3">
+                <span className="text-orange-400 text-xl">✓</span>
+                <div>
+                  <h3 className="font-bold text-white">No Annual Fee</h3>
+                  <p className="text-sm text-slate-400">Zero cost to hold. Zero friction to use.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <span className="text-orange-400 text-xl">✓</span>
+                <div>
+                  <h3 className="font-bold text-white">Instant Settlement</h3>
+                  <p className="text-sm text-slate-400">Bitcoin appears in your wallet immediately.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <span className="text-orange-400 text-xl">✓</span>
+                <div>
+                  <h3 className="font-bold text-white">$50 Bitcoin Sign-Up Bonus</h3>
+                  <p className="text-sm text-slate-400">Use our referral code and get $50 worth of Bitcoin.</p>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500 italic">
+              The tool for Bitcoin believers who want to stack sats while living in fiat.
+            </p>
+          </motion.div>
+
+          {/* Right: CTA */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="bg-gradient-to-br from-slate-900/50 to-slate-950 border border-orange-500/30 rounded-lg p-8 h-fit"
+          >
+            <div className="space-y-6">
+              <div>
+                <p className="text-2xl font-black text-orange-400 mb-2">$50 in Bitcoin</p>
+                <p className="text-sm text-slate-400">Get your referral bonus now</p>
+              </div>
+
+              <motion.a
+                href="https://creditcard.exchange.gemini.com/credit-card/apply?referral_code=jljkt4e94"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05 }}
+                className="block w-full px-6 py-4 bg-orange-500 text-black font-bold rounded-lg hover:bg-orange-400 transition-colors text-center retro-body"
+              >
+                Get $50 Bitcoin Bonus
+              </motion.a>
+
+              <div className="p-4 bg-slate-900/50 rounded border border-slate-700/50">
+                <p className="text-xs text-slate-400 mb-2 font-bold">REFERRAL CODE:</p>
+                <p className="text-sm font-mono text-orange-300">jljkt4e94</p>
+              </div>
+
+              <p className="text-xs text-slate-500 text-center">
+                Earn Bitcoin on every transaction. Spend fiat. Stack sats.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
